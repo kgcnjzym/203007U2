@@ -5,7 +5,7 @@ import java.sql.*;
 import java.util.Properties;
 
 /**
- * JDBC工具类
+ * JDBC连接工具类
  * @author 杨卫兵
  * @version V1.00
  * @date 2020/11/5 08:50
@@ -13,7 +13,12 @@ import java.util.Properties;
  */
 public class DataBaseUtil {
     private static Properties properties;
+    /**
+     * 本地线程容器：确保同一线程中使用相同的连接对象
+     */
+    private static ThreadLocal<Connection> local=null;
     static{
+        local=new ThreadLocal<>();
         properties=new Properties();
         InputStream is=null;
         try{
@@ -38,12 +43,15 @@ public class DataBaseUtil {
      * @return
      */
     public static Connection getConnection(){
-        Connection conn=null;
+        Connection conn=local.get();
         try {
-            Class.forName(properties.getProperty("driver"));
-            conn = DriverManager.getConnection(
-                    properties.getProperty("url"),
-                    properties);
+            if(conn==null) {
+                Class.forName(properties.getProperty("driver"));
+                conn = DriverManager.getConnection(
+                        properties.getProperty("url"),
+                        properties);
+                local.set(conn);
+            }
             return conn;
         }
         catch(Exception ex){
@@ -53,95 +61,43 @@ public class DataBaseUtil {
     }
 
     /**
-     * 释放JDBC资源
-     * @param conn
+     * 释放资源，如果是自动提交事务则关闭连接
      * @param stmt
      * @param rs
      */
-    public static void closeQuietly(Connection conn,
-                                    Statement stmt,
+    public static void closeQuietly(Statement stmt,
                                     ResultSet rs){
         try {
             rs.close();
         } catch (Exception e) {
-//            e.printStackTrace();
         }
         try {
             stmt.close();
         } catch (Exception e) {
-//            e.printStackTrace();
         }
+        Connection conn=DataBaseUtil.getConnection();
+        try {
+            if (conn.getAutoCommit()) {
+                closeConnection();
+            }
+        }catch (Exception ex){}
+    }
+
+    /**
+     * 关闭连接：在手动提交模式下提供给事务管理器的提交、回滚方法使用
+     * 在自动提交模式下提供给closeQuietly使用
+     */
+    public static void closeConnection(){
+        Connection conn=local.get();
         try {
             conn.close();
         } catch (Exception e) {
-//            e.printStackTrace();
+        }
+        try {
+            local.remove();
+        } catch (Exception e) {
         }
 
-    }
-
-    /**
-     * 数据库读操作
-     * @param conn
-     * @param sql
-     * @return      结果集对象
-     */
-    public static ResultSet query(Connection conn,String sql){
-        Statement stmt=null;
-        ResultSet rs=null;
-        try{
-            stmt=conn.createStatement();
-            rs= stmt.executeQuery(sql);
-            return rs;
-        }
-        catch(Exception ex){
-            System.out.println(ex);
-        }
-        return null;
-    }
-
-    /**
-     * ?作为占位符，通过setXXX设置占位符的值
-     * @param conn
-     * @param sql
-     * @param params
-     * @return
-     */
-    public static ResultSet query(Connection conn,String sql,Object...params){
-        PreparedStatement stmt=null;
-        ResultSet rs=null;
-        try{
-            stmt=conn.prepareStatement(sql);
-            stmt.setObject(1,params[0]);
-            stmt.setObject(2,params[1]);
-            rs= stmt.executeQuery();
-            return rs;
-        }
-        catch(Exception ex){
-            System.out.println(ex);
-        }
-        return null;
-    }
-
-    /**
-     * 数据库写操作
-     * @param sql
-     * @return  受影响的记录数
-     */
-    public static int update(String sql){
-        Connection conn=null;
-        Statement stmt=null;
-        try{
-            conn=getConnection();
-            stmt=conn.createStatement();
-            return stmt.executeUpdate(sql);
-        }
-        catch(Exception ex){
-            System.out.println(ex);
-        }
-        finally{
-            closeQuietly(conn,stmt,null);
-        }
-        return 0;
     }
 
 }
