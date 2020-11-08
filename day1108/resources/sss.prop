@@ -1,0 +1,12 @@
+# 数据库基本配置
+driverClassName=com.mysql.jdbc.Driver
+url=jdbc:mysql://localhost:3306/db1?useUnicode=true&characterEncoding=utf8
+username=root
+password=123456
+
+#连接池配置
+initialSize=3
+maxActive=9
+#maxIdle=5
+minIdle=3
+maxWait=5000

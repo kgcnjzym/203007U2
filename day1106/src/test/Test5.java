@@ -5,6 +5,7 @@ import com.xt.dao.impl.BookDaoImpl;
 import com.xt.entity.Book;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * BookDao测试

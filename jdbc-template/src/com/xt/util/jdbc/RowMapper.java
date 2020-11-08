@@ -3,6 +3,7 @@ package com.xt.util.jdbc;
 import java.sql.ResultSet;
 
 /**
+ * 结果集映射接口
  * @author 杨卫兵
  * @version V1.00
  * @date 2020/11/6 09:59

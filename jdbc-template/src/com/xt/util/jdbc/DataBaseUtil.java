@@ -1,5 +1,9 @@
 package com.xt.util.jdbc;
 
+import com.alibaba.druid.pool.DruidDataSourceFactory;
+import org.apache.commons.dbcp.BasicDataSourceFactory;
+
+import javax.sql.DataSource;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
@@ -12,19 +16,31 @@ import java.util.Properties;
  * @since V1.00
  */
 public class DataBaseUtil {
+    public static String DBPOOL_TYPE="dbcp";
+    public static String PROPERTIES_FILE_NAME="db.properties";
     private static Properties properties;
     /**
      * 本地线程容器：确保同一线程中使用相同的连接对象
      */
     private static ThreadLocal<Connection> local=null;
-    static{
+    private static DataSource dataSource=null;
+    private static void init(){
         local=new ThreadLocal<>();
         properties=new Properties();
         InputStream is=null;
         try{
             is=DataBaseUtil.class.getClassLoader().
-                    getResourceAsStream("db.properties");
+                    getResourceAsStream(PROPERTIES_FILE_NAME);
             properties.load(is);
+            if("dbcp".equalsIgnoreCase(DBPOOL_TYPE)) {
+                dataSource = BasicDataSourceFactory.createDataSource(properties);
+            }
+            else if("druid".equalsIgnoreCase(DBPOOL_TYPE)){
+                dataSource = DruidDataSourceFactory.createDataSource(properties);
+            }
+            else if("tomcat".equalsIgnoreCase(DBPOOL_TYPE)){
+                //以后再补
+            }
         }
         catch(Exception ex){
             ex.printStackTrace();
@@ -43,13 +59,13 @@ public class DataBaseUtil {
      * @return
      */
     public static Connection getConnection(){
+        if(dataSource==null){
+            init();
+        }
         Connection conn=local.get();
         try {
             if(conn==null) {
-                Class.forName(properties.getProperty("driver"));
-                conn = DriverManager.getConnection(
-                        properties.getProperty("url"),
-                        properties);
+                conn=dataSource.getConnection();
                 local.set(conn);
             }
             return conn;
