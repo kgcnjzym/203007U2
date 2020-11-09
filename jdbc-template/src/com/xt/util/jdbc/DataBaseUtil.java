@@ -2,6 +2,7 @@ package com.xt.util.jdbc;
 
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import org.apache.commons.dbcp.BasicDataSourceFactory;
+import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
@@ -16,6 +17,7 @@ import java.util.Properties;
  * @since V1.00
  */
 public class DataBaseUtil {
+    private static Logger logger=Logger.getRootLogger();
     public static String DBPOOL_TYPE="dbcp";
     public static String PROPERTIES_FILE_NAME="db.properties";
     private static Properties properties;
@@ -32,25 +34,28 @@ public class DataBaseUtil {
             is=DataBaseUtil.class.getClassLoader().
                     getResourceAsStream(PROPERTIES_FILE_NAME);
             properties.load(is);
+            logger.debug("Load "+PROPERTIES_FILE_NAME+" OK!");
             if("dbcp".equalsIgnoreCase(DBPOOL_TYPE)) {
                 dataSource = BasicDataSourceFactory.createDataSource(properties);
+                logger.debug("create dbcp datasource");
             }
             else if("druid".equalsIgnoreCase(DBPOOL_TYPE)){
                 dataSource = DruidDataSourceFactory.createDataSource(properties);
+                logger.debug("create druid datasource");
             }
             else if("tomcat".equalsIgnoreCase(DBPOOL_TYPE)){
                 //以后再补
+                logger.debug("create tomcat datasource");
             }
         }
         catch(Exception ex){
-            ex.printStackTrace();
+            logger.debug(ex.getMessage());
+            throw new DataAccessException(ex.getMessage());
         }
         finally {
             try {
                 is.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            } catch (Exception e) {}
         }
     }
 
@@ -71,9 +76,9 @@ public class DataBaseUtil {
             return conn;
         }
         catch(Exception ex){
-            ex.printStackTrace();
+            logger.warn(ex.getMessage());
+            throw new DataAccessException(ex.getMessage());
         }
-        return null;
     }
 
     /**
@@ -94,6 +99,7 @@ public class DataBaseUtil {
         Connection conn=DataBaseUtil.getConnection();
         try {
             if (conn.getAutoCommit()) {
+                logger.debug("关闭自动提交的连接对象");
                 closeConnection();
             }
         }catch (Exception ex){}

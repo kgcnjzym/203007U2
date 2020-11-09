@@ -1,5 +1,7 @@
 package com.xt.util.jdbc;
 
+import org.apache.log4j.Logger;
+
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -15,6 +17,7 @@ import java.util.Map;
  * @since V1.00
  */
 public class Row2Object {
+    private static Logger logger=Logger.getRootLogger();
     /**
      * String : Class Name
      *      String: colName
@@ -76,7 +79,7 @@ public class Row2Object {
             }
         }
         catch (Exception ex){
-            ex.printStackTrace();
+            logger.debug(ex.getMessage());
         }
         return obj;
     }
@@ -104,6 +107,9 @@ public class Row2Object {
                     break;
                 }
             }
+        }
+        if(mth==null){
+            logger.debug(colName+" not found matched setter!");
         }
         return mth;
 
