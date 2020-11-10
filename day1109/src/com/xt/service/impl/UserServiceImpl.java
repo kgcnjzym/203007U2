@@ -5,6 +5,7 @@ import com.xt.dao.impl.UserDaoImpl;
 import com.xt.entity.User;
 import com.xt.service.UserService;
 import com.xt.util.jdbc.TransactionManager;
+import com.xt.utils.Md5Util;
 
 /**
  * @author 杨卫兵
@@ -31,6 +32,7 @@ public class UserServiceImpl implements UserService {
             if(ret>0){
                 throw new RuntimeException("手机号["+user.getPhone()+"]已存在！");
             }
+            user.setPassword(Md5Util.getMD5(user.getPassword()));
             ret=dao.insert(user);
             tm.commit();
             return ret;
@@ -43,12 +45,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(User user) {
+        user.setPassword(Md5Util.getMD5(user.getPassword()));
         return dao.selectByUser(user);
     }
 
     @Override
     public int modifyPass(String newPass, String oldPass, Integer uid) {
-        return dao.updatePassword(newPass,oldPass,uid);
+        return dao.updatePassword(Md5Util.getMD5(newPass),
+                Md5Util.getMD5(oldPass),uid);
     }
 
     @Override

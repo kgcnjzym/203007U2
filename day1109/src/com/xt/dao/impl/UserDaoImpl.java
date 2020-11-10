@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User selectByUser(User user) {
-        String sql="select * from users where " +
+        String sql="select id, name, email, gender, age, phone, state from users where " +
                 "(name=? or email=? or phone=?) " +
                 "and (password=?) " +
                 "and (state>0)";

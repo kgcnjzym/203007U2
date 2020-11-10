@@ -114,20 +114,20 @@ public class UMS {
         String newpass1=sc.next();
         System.out.println("pls input new pass again:");
         String newpass2=sc.next();
-        if(current.getPassword().equals(oldpass)){
-            if(!newpass1.equals(newpass2)){
-                System.out.println("new password is not same");
-                return;
-            }
-            int ret=service.modifyPass(newpass1,oldpass,current.getId());
-            if(ret==1){
-                System.out.println("password modify success!");
-                current.setPassword(newpass1);
-            }
+
+        if(!newpass1.equals(newpass2)){
+            System.out.println("new password is not same");
+            return;
+        }
+        int ret=service.modifyPass(newpass1,oldpass,current.getId());
+        if(ret==1){
+            System.out.println("password modify success!");
+            current.setPassword(newpass1);
         }
         else{
-            System.out.println("旧密码错误！");
+            System.out.println("password modify fail!");
         }
+
 
     }
     private static void info() {
