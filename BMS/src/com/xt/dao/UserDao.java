@@ -63,4 +63,12 @@ public interface UserDao {
      */
     int updateInfo(User user);
 
+    /**
+     *
+     * @param uid
+     * @param score
+     * @return
+     */
+    int updateScore(Integer uid,Integer score);
+
 }

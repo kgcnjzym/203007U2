@@ -33,6 +33,11 @@
                 <%if(curr!=null){%>
                 <li><a href="index.jsp">HOME</a></li>
                 <li><a href="books.jsp">图书借阅</a></li>
+                <%if(curr.getState().equals(1)){%>
+                <li><a href="returnbooks.jsp">图书归还</a></li>
+                <%}else{%>
+                <li><a href="adminreturnbooks.jsp">图书归还</a></li>
+                <%}%>
                 <li><a href="modifyPass.jsp">修改密码</a></li>
                 <li><a href="modifyInfo.jsp">修改信息</a></li>
                 <li><a href="logoff.jsp">安全退出</a></li>

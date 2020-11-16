@@ -63,4 +63,10 @@ public class UserDaoImpl implements UserDao {
                 user.getEmail(),user.getGender(),user.getAge(),
                 user.getPhone(),user.getId());
     }
+
+    @Override
+    public int updateScore(Integer uid, Integer score) {
+        String sql="update users set score=score-? where id=? and score>=?";
+        return template.update(sql,false,score,uid,score);
+    }
 }
