@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/pages/check.jsp"%>
 <html>
   <head>
     <title>list</title>
@@ -14,12 +15,11 @@
   <body>
 
   <%
-    String curr=(String)session.getAttribute("name");
     List<String> names=(List<String>)application.getAttribute("users");
     for(int i=0;i<names.size();i++){
       String name=names.get(i);
       out.print("<p>"+name);
-      if(curr.equals(name)){
+      if(user.equals(name)){
         out.print("<a href='logoff.jsp' target='_top'>退出</a>");
       }
       out.print("</p>");
