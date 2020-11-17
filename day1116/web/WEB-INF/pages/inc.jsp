@@ -1,16 +1,12 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: yangweibing
-  Date: 2020/11/17
-  Time: 09:07
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>$Title$</title>
+    <title>inc</title>
 </head>
 <body>
-$END$
+<h1>this is inc.jsp</h1>
+<h1><%=user%></h1>
+<h2>name:<%=request.getParameter("name")%></h2>
+<h2>age:<%=request.getParameter("age")%></h2>
 </body>
 </html>

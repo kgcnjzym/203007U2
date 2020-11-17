@@ -1,16 +1,17 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: yangweibing
-  Date: 2020/11/17
-  Time: 09:05
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>$Title$</title>
+    <title>include动作</title>
 </head>
 <body>
-$END$
+<%
+//    request.getRequestDispatcher("..").include(request,response);
+%>
+<h1>this is 04.jsp</h1>
+<jsp:useBean id="user" class="com.xt.entity.User"  />
+<jsp:include page="/WEB-INF/pages/inc.jsp?age=20">
+    <jsp:param name="name" value="andy"/>
+</jsp:include>
+<h1>this is 04.jsp</h1>
 </body>
 </html>

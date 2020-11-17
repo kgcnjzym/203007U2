@@ -1,16 +1,18 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: yangweibing
-  Date: 2020/11/17
-  Time: 10:42
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>$Title$</title>
+    <title>EL内置对象</title>
 </head>
 <body>
-$END$
+<h2>name:${param.name}</h2>
+<h2>first-name:${param.first-name}</h2>
+<h2>first-name:${param['first-name']}</h2>
+<h2>hobbys:${paramValues.hobby}</h2>
+<h2>browser:${header['user-agent']}</h2>
+<h2>cookie:${cookie.name.name}=${cookie.name.value}</h2>
+<h2>password:${initParam.password}</h2>
+<h2>session id:<%=session.getId()%></h2>
+<%--session.getAttribute("id")--%>
+<h2>session id:${pageContext.session.id}</h2>
 </body>
 </html>

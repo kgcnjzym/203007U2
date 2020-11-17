@@ -1,16 +1,13 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: yangweibing
-  Date: 2020/11/17
-  Time: 08:50
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>$Title$</title>
+    <title>forward动作</title>
 </head>
 <body>
-$END$
+<jsp:useBean id="user" class="com.xt.entity.User" scope="request"/>
+<jsp:forward page="/WEB-INF/pages/03-1.jsp?email=222">
+    <jsp:param name="name" value="tom"/>
+    <jsp:param name="age" value="20"/>
+</jsp:forward>
 </body>
 </html>
