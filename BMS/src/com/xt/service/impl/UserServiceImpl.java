@@ -2,10 +2,14 @@ package com.xt.service.impl;
 
 import com.xt.dao.UserDao;
 import com.xt.dao.impl.UserDaoImpl;
+import com.xt.entity.Paginate;
 import com.xt.entity.User;
 import com.xt.service.UserService;
+import com.xt.service.UserState;
 import com.xt.util.jdbc.TransactionManager;
 import com.xt.utils.Md5Util;
+
+import java.util.List;
 
 /**
  * @author 杨卫兵
@@ -80,5 +84,44 @@ public class UserServiceImpl implements UserService {
             throw ex;
         }
 
+    }
+
+    @Override
+    public List<User> getByPage(Paginate page) {
+        try{
+            tm.start();
+            int records=dao.selectCount();
+            page.setRecords(records);
+            List<User> users=dao.selectByPage(
+                    (page.getPageNo()-1)*page.getPageSize(),
+                    page.getPageSize()
+            );
+            tm.commit();
+            return users;
+        }
+        catch (RuntimeException ex){
+            tm.rollback();
+            throw ex;
+        }
+    }
+
+    @Override
+    public int delete(Integer id) {
+        return dao.updateState(id, UserState.DELETED,UserState.NORMAL);
+    }
+
+    @Override
+    public int recover(Integer id) {
+        return dao.updateState(id,UserState.NORMAL, UserState.DELETED);
+    }
+
+    @Override
+    public int degrade(Integer id) {
+        return dao.updateState(id, UserState.NORMAL,UserState.ADMIN);
+    }
+
+    @Override
+    public int upgrade(Integer id) {
+        return dao.updateState(id, UserState.ADMIN,UserState.NORMAL);
     }
 }

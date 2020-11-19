@@ -4,6 +4,8 @@ import com.xt.dao.UserDao;
 import com.xt.entity.User;
 import com.xt.util.jdbc.JdbcTemplate;
 
+import java.util.List;
+
 /**
  * @author 杨卫兵
  * @version V1.00
@@ -15,7 +17,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int insert(User user) {
-        String sql="insert into users values(0,?,?,?,?,?,?,1)";
+        String sql="insert into users values(0,?,?,?,?,?,?,0,1)";
         return template.update(sql,true,user.getName(),
                 user.getPassword(),user.getEmail(),user.getGender(),
                 user.getAge(),user.getPhone());
@@ -68,5 +70,23 @@ public class UserDaoImpl implements UserDao {
     public int updateScore(Integer uid, Integer score) {
         String sql="update users set score=score-? where id=? and score>=?";
         return template.update(sql,false,score,uid,score);
+    }
+
+    @Override
+    public int selectCount() {
+        String sql="select count(1) from users";
+        return template.queryScale(sql,Integer.class);
+    }
+
+    @Override
+    public List<User> selectByPage(Integer start, Integer size) {
+        String sql="select * from users limit ?,?";
+        return template.queryList(sql,User.class,start,size);
+    }
+
+    @Override
+    public int updateState(Integer id, Integer newState, Integer oldState) {
+        String sql="update users set state=? where id=? and state=?";
+        return template.update(sql,false,newState,id,oldState);
     }
 }

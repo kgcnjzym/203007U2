@@ -1,5 +1,6 @@
 <%@ page import="com.xt.entity.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Menu</title>
@@ -24,27 +25,28 @@
     </style>
 </head>
 <body>
-<%
-    User curr=(User)session.getAttribute("user");
-%>
     <div class="container">
         <div class="menu">
             <ul>
-                <%if(curr!=null){%>
+                <c:if test="${not empty user}" var="rt">
                 <li><a href="index.jsp">HOME</a></li>
                 <li><a href="books.jsp">图书借阅</a></li>
-                <%if(curr.getState().equals(1)){%>
+                <c:if test="${user.state eq 1}">
                 <li><a href="returnbooks.jsp">图书归还</a></li>
-                <%}else{%>
-                <li><a href="adminreturnbooks.jsp">图书归还</a></li>
-                <%}%>
+                </c:if>
+                <c:if test="${user.state gt 1}">
+                    <li><a href="adminreturnbooks.jsp">图书归还</a></li>
+                    <li><a href="addbook.jsp">添加图书</a></li>
+                    <li><a href="useradmin.jsp">用户管理</a></li>
+                </c:if>
                 <li><a href="modifyPass.jsp">修改密码</a></li>
                 <li><a href="modifyInfo.jsp">修改信息</a></li>
                 <li><a href="logoff.jsp">安全退出</a></li>
-                <%}else{%>
+                </c:if>
+                <c:if test="${not rt}">
                 <li><a href="login.jsp">登陆</a></li>
                 <li><a href="reg.jsp">注册</a></li>
-                <%}%>
+                </c:if>
             </ul>
         </div>
     </div>

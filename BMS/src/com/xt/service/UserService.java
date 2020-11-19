@@ -1,6 +1,9 @@
 package com.xt.service;
 
+import com.xt.entity.Paginate;
 import com.xt.entity.User;
+
+import java.util.List;
 
 /**
  * @author 杨卫兵
@@ -39,4 +42,38 @@ public interface UserService {
      */
     int modifyInfo(User user);
 
+    /**
+     * 分页查找用户信息
+     * @param page
+     * @return
+     */
+    List<User> getByPage(Paginate page);
+
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    int delete(Integer id);
+
+    /**
+     * 恢复
+     * @param id
+     * @return
+     */
+    int recover(Integer id);
+
+    /**
+     * 降级
+     * @param id
+     * @return
+     */
+    int degrade(Integer id);
+
+    /**
+     *  升级
+     * @param id
+     * @return
+     */
+    int upgrade(Integer id);
 }
