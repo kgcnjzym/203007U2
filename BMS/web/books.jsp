@@ -41,6 +41,8 @@
         <td>
             <button type="button" <%=book.getCount()>0?"":"disabled"%>
                     onclick="location='borrow.jsp?bid=<%=book.getId()%>'">借阅</button>
+            <button type="button" <%=book.getCount()>0?"":"disabled"%>
+                    onclick="location='addCart.jsp?op=add&bid=<%=book.getId()%>'">购买</button>
         </td>
         <%}%>
         </tbody>

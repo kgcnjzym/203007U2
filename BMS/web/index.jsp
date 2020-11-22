@@ -6,5 +6,6 @@
   </head>
   <body>
   <%@ include file="/WEB-INF/pages/menu.jsp"%>
+  <h2 style="color: red">${msg}</h2>
   </body>
 </html>

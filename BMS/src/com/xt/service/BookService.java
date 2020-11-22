@@ -16,4 +16,11 @@ public interface BookService {
      * @return
      */
     List<Book> getAll();
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    Book getById(Integer id);
 }
