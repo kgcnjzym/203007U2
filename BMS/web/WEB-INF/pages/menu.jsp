@@ -38,7 +38,7 @@
                 <c:if test="${user.state gt 1}">
                     <li><a href="adminreturnbooks.jsp">图书归还</a></li>
                     <li><a href="addbook.jsp">添加图书</a></li>
-                    <li><a href="useradmin.jsp">用户管理</a></li>
+                    <li><a href="useradmin.do">用户管理</a></li>
                 </c:if>
                 <li><a href="modifyPass.jsp">修改密码</a></li>
                 <li><a href="modifyInfo.jsp">修改信息</a></li>
