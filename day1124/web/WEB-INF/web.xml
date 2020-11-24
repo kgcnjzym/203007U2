@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <listener>
+        <listener-class>com.xt.listener.ApplicationListener</listener-class>
+    </listener>
+    <filter>
+        <filter-name>FirstFilter</filter-name>
+        <filter-class>com.xt.filter.FirstFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>SecondFilter</filter-name>
+        <filter-class>com.xt.filter.SecondFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>CharacterFilter</filter-name>
+        <filter-class>com.xt.filter.CharacterFilter</filter-class>
+<!--        <init-param>-->
+<!--            <param-name>Encoding</param-name>-->
+<!--            <param-value>UTF-8</param-value>-->
+<!--        </init-param>-->
+        <init-param>
+            <param-name>EnableGet</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+
+
+    <filter-mapping>
+        <filter-name>CharacterFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>SecondFilter</filter-name>
+        <url-pattern>/index.jsp</url-pattern>
+        <url-pattern>*.do</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>FirstFilter</filter-name>
+        <url-pattern>/index.jsp</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+<!--        <dispatcher>ERROR</dispatcher>-->
+    </filter-mapping>
+    <servlet>
+        <servlet-name>Target</servlet-name>
+        <servlet-class>com.xt.servlet.TargetServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Target</servlet-name>
+        <url-pattern>/target.do</url-pattern>
+    </servlet-mapping>
+</web-app>
