@@ -4,9 +4,13 @@ import com.alibaba.druid.pool.DruidDataSourceFactory;
 import org.apache.commons.dbcp.BasicDataSourceFactory;
 import org.apache.log4j.Logger;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.io.InputStream;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Properties;
 
 /**
@@ -44,7 +48,9 @@ public class DataBaseUtil {
                 logger.debug("create druid datasource");
             }
             else if("tomcat".equalsIgnoreCase(DBPOOL_TYPE)){
-                //以后再补
+                Context ctx=new InitialContext();
+                dataSource=(DataSource) ctx.lookup(
+                        properties.getProperty("jndi"));
                 logger.debug("create tomcat datasource");
             }
         }
