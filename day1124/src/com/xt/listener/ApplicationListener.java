@@ -10,18 +10,21 @@ import javax.servlet.*;
  */
 public class ApplicationListener  implements ServletContextListener, ServletContextAttributeListener {
     @Override
-    public void attributeAdded(ServletContextAttributeEvent servletContextAttributeEvent) {
-        System.out.println("添加数据");
+    public void attributeAdded(ServletContextAttributeEvent sce) {
+        System.out.println("添加数据:"+sce.getName()+"="+sce.getValue());
     }
 
     @Override
-    public void attributeRemoved(ServletContextAttributeEvent servletContextAttributeEvent) {
-        System.out.println("删除数据");
+    public void attributeRemoved(ServletContextAttributeEvent sce) {
+        System.out.println("删除数据:"+sce.getName()+"="+sce.getValue());
     }
 
     @Override
-    public void attributeReplaced(ServletContextAttributeEvent servletContextAttributeEvent) {
-        System.out.println("修改数据");
+    public void attributeReplaced(ServletContextAttributeEvent sce) {
+        //value：新？旧？
+        System.out.println("修改数据，旧值:"+sce.getName()+"="+sce.getValue());
+        System.out.println("修改数据，新值:"+sce.getName()+"="+
+                sce.getServletContext().getAttribute(sce.getName()));
     }
 
     @Override
