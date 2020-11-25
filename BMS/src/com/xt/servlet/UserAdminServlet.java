@@ -26,6 +26,10 @@ public class UserAdminServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session=req.getSession();
         User user=(User)session.getAttribute("user");
+        if(user.getState()<=1){
+            resp.sendRedirect("index.jsp");
+            return;
+        }
         String op=req.getParameter("op");
         int id=0;
         try{

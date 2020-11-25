@@ -1,6 +1,5 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="/WEB-INF/pages/checkPro.jsp"%>
 <html>
 <head>
     <title>修改信息</title>
@@ -13,7 +12,7 @@
         out.print("<h2 style='color:red'>"+msg+"</h2>");
     }
 %>
-<form action="doModify.jsp" method="post">
+<form action="modify.do" method="post">
     <input type="hidden" name="op" value="info">
     <input type="hidden" name="ref" value="modifyInfo.jsp">
     <p>

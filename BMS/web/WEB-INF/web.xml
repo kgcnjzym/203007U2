@@ -3,13 +3,59 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
+    <!--  全局配置，通过ServletContext对象获取，或者是EL的initParam获取  -->
+    <context-param>
+        <param-name>DBPOOL_TYPE</param-name>
+        <param-value>tomcat</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>com.xt.listener.ApplicationListener</listener-class>
+    </listener>
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>com.xt.filter.AuthFilter</filter-class>
+        <init-param>
+            <param-name>RedirectURL</param-name>
+            <param-value>/login.jsp</param-value>
+        </init-param>
+        <init-param>
+            <param-name>SessionAttrName</param-name>
+            <param-value>user</param-value>
+        </init-param>
+        <init-param>
+            <param-name>Redirect</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
     
     <servlet>
         <servlet-name>UserAdminServlet</servlet-name>
         <servlet-class>com.xt.servlet.UserAdminServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UserInfoServlet</servlet-name>
+        <servlet-class>com.xt.servlet.UserInfoServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>TestServlet</servlet-name>
+        <servlet-class>com.xt.servlet.TestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TestServlet</servlet-name>
+        <url-pattern>/test/first.do</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UserAdminServlet</servlet-name>
         <url-pattern>/useradmin.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserInfoServlet</servlet-name>
+        <url-pattern>/modify.do</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -1,9 +1,8 @@
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ include file="/WEB-INF/pages/checkPro.jsp"%>
 <c:if test="${user.state le 1}">
-    <c:redirect url="../../index.jsp"/>
+    <c:redirect url="index.jsp"/>
 </c:if>
 <html>
 <head>
