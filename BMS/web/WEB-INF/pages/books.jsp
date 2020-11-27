@@ -19,6 +19,7 @@
     <table border="1" align="center" width="600">
         <thead>
         <tr>
+            <th>图书封面</th>
             <th>图书名称</th>
             <th>作者</th>
             <th>出版社</th>
@@ -33,6 +34,7 @@
             for (int i = 0; i < ret.size(); i++) {
                 Book book=ret.get(i);
                 out.print("<tr>");
+                out.print("<td><img src='imgs/book/" + book.getId() + ".jpg' width='80'></td>");
                 out.print("<td>" + book.getName() + "</td>");
                 out.print("<td>" + book.getAuthor() + "</td>");
                 out.print("<td>" + book.getPubComp() + "</td>");
