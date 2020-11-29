@@ -44,11 +44,11 @@ public class BorrowServiceImpl implements BorrowService {
             borrow.setBid(bid);
             borrow.setRid(uid);
             ret=borrowDao.insert(borrow);
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                Thread.sleep(5000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             if(ret==0){
                 throw  new RuntimeException("借阅记录添加失败");
             }

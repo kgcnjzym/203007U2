@@ -20,7 +20,17 @@ public interface BorrowService {
      */
     int lend(Integer uid,Integer bid);
 
+    /**
+     * 根据用户id获取借阅记录
+     * @param uid
+     * @return
+     */
     List<BorrowVo> getByUser(Integer uid);
+
+    /**
+     * 获取所有借阅记录
+     * @return
+     */
     List<BorrowVo> getAll();
 
     /**

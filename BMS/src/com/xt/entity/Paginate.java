@@ -8,11 +8,24 @@ package com.xt.entity;
  * @since V1.00
  */
 public class Paginate {
+    public static Integer GROUP_SIZE=5;
     private static final Integer MIN_PAGESIZE=3;
     private Integer pageNo;
     private Integer pageSize;
     private Integer pages;
     private Integer records;
+    private Integer start;
+
+    public Integer getStart() {
+        return start;
+    }
+
+    public Integer getEnd() {
+        return end;
+    }
+
+    private Integer end;
+
 
     public Integer getPageNo() {
         return pageNo;
@@ -55,5 +68,8 @@ public class Paginate {
         this.records = records;
         this.pages=(records+this.pageSize-1)/this.pageSize;
         this.pageNo=this.pageNo>pages?pages:this.pageNo;
+        this.start=(this.pageNo-1)/GROUP_SIZE*GROUP_SIZE+1;
+        this.end=this.start+GROUP_SIZE-1;
+        this.end=this.end>this.pages?this.pages:this.end;
     }
 }

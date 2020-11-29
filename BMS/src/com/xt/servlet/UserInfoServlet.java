@@ -5,10 +5,7 @@ import com.xt.service.UserService;
 import com.xt.service.impl.UserServiceImpl;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 /**
@@ -18,11 +15,11 @@ import java.io.IOException;
  * @since V1.00
  */
 public class UserInfoServlet extends HttpServlet {
+    private UserService service=new UserServiceImpl();
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserService service=new UserServiceImpl();
         String op=req.getParameter("op");
-        String ref=req.getParameter("ref");
+        String ref="/WEB-INF/pages/modifyInfo.jsp";
         if("showpass".equals(op)){
             req.getRequestDispatcher("/WEB-INF/pages/modifyPass.jsp").forward(req,resp);
             return;
@@ -31,9 +28,20 @@ public class UserInfoServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/pages/modifyInfo.jsp").forward(req,resp);
             return;
         }
+        if("logoff".equals(op)){
+            HttpSession session=req.getSession();
+            session.removeAttribute("user");
+            Cookie ck=new Cookie("name","");
+            resp.addCookie(ck);
+            session.invalidate();
+            req.setAttribute("msg","已安全退出");
+            req.getRequestDispatcher("/WEB-INF/pages/login.jsp").forward(req,resp);
+            return;
+        }
         HttpSession session=req.getSession();
         User user=(User)session.getAttribute("user");
         if("pass".equals(op)){
+            ref="/WEB-INF/pages/modifyPass.jsp";
             String oldpass=req.getParameter("oldpass");
             String newpass1=req.getParameter("newpass1");
             String newpass2=req.getParameter("newpass2");

@@ -23,4 +23,18 @@ public interface BookService {
      * @return
      */
     Book getById(Integer id);
+
+    /**
+     *
+     * @param book
+     * @return
+     */
+    int add(Book book);
+
+    /**
+     *
+     * @param limit
+     * @return
+     */
+    List<Integer> getTopBookIds(Integer limit);
 }

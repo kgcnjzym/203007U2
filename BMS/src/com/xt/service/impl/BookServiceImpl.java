@@ -6,6 +6,7 @@ import com.xt.entity.Book;
 import com.xt.service.BookService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author 杨卫兵
@@ -23,5 +24,17 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getById(Integer id) {
         return dao.selectById(id);
+    }
+
+    @Override
+    public int add(Book book) {
+        return dao.insert(book);
+    }
+
+    @Override
+    public List<Integer> getTopBookIds(Integer limit) {
+        List<Book> books=dao.selectTop(limit);
+        return books.stream().map(b->b.getId()).
+                collect(Collectors.toList());
     }
 }

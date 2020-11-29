@@ -43,4 +43,23 @@ public class BookDaoImpl implements BookDao {
         String sql="update book set bcount=bcount-? where bid=? and bcount>=?";
         return template.update(sql,false,count,bid,count);
     }
+
+    @Override
+    public int insert(Book book) {
+        String sql="insert into book values(0,?,?,?,?,?,?)";
+        return template.update(sql,true,book.getName(),
+                book.getAuthor(),book.getPubComp(),
+                book.getPubDate(),book.getCount(),
+                book.getPrice());
+    }
+
+    @Override
+    public List<Book> selectTop(Integer limit) {
+        String sql="select bid id " +
+                "from orderdetail " +
+                "group by id " +
+                "order by sum(quantity)  desc " +
+                "limit ?";
+        return template.queryList(sql,Book.class,limit);
+    }
 }

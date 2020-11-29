@@ -1,5 +1,6 @@
 package com.xt.listener;
 
+import com.xt.entity.Paginate;
 import com.xt.util.jdbc.DataBaseUtil;
 
 import javax.servlet.ServletContextEvent;
@@ -18,6 +19,11 @@ public class ApplicationListener implements ServletContextListener {
         if(value!=null && !value.trim().equals("")) {
             DataBaseUtil.DBPOOL_TYPE = value;
         }
+        value=servletContextEvent.getServletContext().getInitParameter("GROUP_SIZE");
+        try{
+            Paginate.GROUP_SIZE=Integer.parseInt(value);
+        }
+        catch (Exception ex){}
     }
 
     @Override

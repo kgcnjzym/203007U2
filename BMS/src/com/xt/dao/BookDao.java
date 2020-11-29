@@ -46,4 +46,18 @@ public interface BookDao {
      * @return
      */
     int updateCount(Integer bid,int count);
+
+    /**
+     * 添加图书
+     * @param book
+     * @return
+     */
+    int insert(Book book);
+
+    /**
+     * 选择销量最大的N本图书编号
+     * @param limit     N
+     * @return
+     */
+    List<Book> selectTop(Integer limit);
 }
