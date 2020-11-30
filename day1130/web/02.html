@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get与Post</title>
+    <script>
+        function doGet(){
+            let xhr=new XMLHttpRequest();
+            xhr.open("get","second.do?name="+txt1.value);
+            xhr.onreadystatechange=function(){
+                if(xhr.readyState==4 && xhr.status==200) {
+                    let ret = xhr.responseText;
+                    console.log(ret);
+                }
+            };
+            xhr.send(null);
+        }
+        function doPost(){
+            let xhr=new XMLHttpRequest();
+            xhr.open("post","second.do");
+            xhr.setRequestHeader("Content-Type",
+                "application/x-www-form-urlencoded;charset=UTF-8");
+            xhr.onreadystatechange=function(){
+                if(xhr.readyState==4 && xhr.status==200) {
+                    let ret = xhr.responseText;
+                    console.log(ret);
+                }
+            };
+            xhr.send("name="+txt1.value);
+
+        }
+    </script>
+</head>
+<body>
+<input type="text"  id="txt1">
+<hr>
+<button onclick="doGet()">get</button>
+<button onclick="doPost()">post</button>
+</body>
+</html>

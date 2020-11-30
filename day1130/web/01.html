@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>异步与同步</title>
+    <script>
+        function doSync(){
+            let xhr=new XMLHttpRequest();
+            xhr.open("get","first.do",false);
+            xhr.send(null);
+            let ret=xhr.responseText;
+            console.log(ret);
+        }
+        function doAsync(){
+            let xhr=new XMLHttpRequest();
+            xhr.open("get","first.do");
+            xhr.onreadystatechange=function(){
+                console.log(xhr.readyState);
+                if(xhr.readyState==4 && xhr.status==200) {
+                    let ret = xhr.responseText;
+                    console.log(ret);
+                }
+                else if(xhr.readyState==4){
+                    let ret = xhr.responseText;
+                    console.log("error:"+xhr.status+"("+ret+")");
+                }
+            };
+            xhr.send(null);
+
+        }
+    </script>
+</head>
+<body>
+<input type="text" name="" id="">
+<hr>
+<button onclick="doSync()">同步</button>
+<button onclick="doAsync()">异步</button>
+</body>
+</html>

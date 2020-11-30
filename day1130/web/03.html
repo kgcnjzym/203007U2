@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX示例</title>
+    <script>
+        let isValid=false;
+        onload=function(){
+            txt1.onblur=function(){
+                let name=txt1.value;
+                if(name.trim()==""){
+                    spMsg.innerHTML="用户名不能为空";
+                    return;
+                }
+                let xhr=new XMLHttpRequest();
+                xhr.open("post","user");
+                xhr.setRequestHeader("Content-Type",
+                    "application/x-www-form-urlencoded;charset=UTF-8");
+                xhr.onreadystatechange=function(){
+                    if(xhr.readyState==4 && xhr.status==200) {
+                        let ret = xhr.responseText;
+                        if(ret=="用户名可以使用"){
+                            isValid=true;
+                        }
+                        else{
+                            isValid=false;
+                        }
+                        spMsg.innerHTML=ret;
+                    }
+                };
+                xhr.send("op=checkname&name="+name);
+            };
+            //focus blur
+        }
+
+        function doSubmit() {
+            if(isValid){
+                let name=txt1.value;
+                let xhr=new XMLHttpRequest();
+                xhr.open("post","user");
+                xhr.setRequestHeader("Content-Type",
+                    "application/x-www-form-urlencoded;charset=UTF-8");
+                xhr.onreadystatechange=function(){
+                    if(xhr.readyState==4 && xhr.status==200) {
+                        let ret = xhr.responseText;
+                        spMsg.innerHTML=ret;
+                    }
+                };
+                let rdos=document.getElementsByName("gender");
+                xhr.send("op=reg&name="+name+"&pass="+
+                    txt2.value+"&repass="+txt3.value+"&gender="+
+                    (rdos[0].checked?"M":"F")
+                );
+            }
+        }
+    </script>
+</head>
+<body>
+<form action="user">
+    <input type="hidden" name="op" value="reg">
+    <p>
+        <label>Name:</label>
+        <input type="text" name="name" id="txt1">
+        <span id="spMsg"></span>
+    </p>
+    <p>
+        <label>Pass:</label>
+        <input type="password" name="pass" id="txt2">
+    </p>
+    <p>
+        <label>RePass:</label>
+        <input type="password" name="repass" id="txt3">
+    </p>
+    <p>
+        <label>Gender:</label>
+        <input type="radio" name="gender" value="M" checked>Male
+        <input type="radio" name="gender" value="F">Female
+    </p>
+    <p>
+        <button type="button" onclick="doSubmit()">Register</button>
+        <button type="reset">Reset</button>
+    </p>
+</form>
+<hr>
+
+</body>
+</html>
