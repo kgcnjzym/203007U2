@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery.ajax示例</title>
+    <script src="jquery/jquery-1.11.1.min.js"></script>
+    <script>
+        function doSync(){
+            $.ajax({
+                url:'first.do',
+                data:'name='+$('.t1').val(),
+                success:function(ret){
+                    console.log(ret);
+                },
+                async:false
+            });
+        }
+        function doSimple(){
+            $.ajax('first.do?name='+$('.t1').val());
+        }
+        function doAsync(){
+            $.ajax({
+                url:'first.do?name='+$('.t1').val(),
+                success:function(ret){
+                    console.log(ret);
+                }
+            });
+        }
+        function doPost(){
+            $.ajax({
+                url:'first.do',
+                data:'name='+$('.t1').val(),
+                type:'post',
+                success:function(ret){
+                    console.log(ret);
+                },
+            });
+        }
+    </script>
+</head>
+<body>
+<input type="text" class="t1">
+<hr>
+<button onclick="doSync()">同步</button>
+<button onclick="doAsync()">异步</button>
+<button onclick="doPost()">POST</button>
+<button onclick="doSimple()">Simple</button>
+</body>
+</html>

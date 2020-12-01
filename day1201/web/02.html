@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>XML数据获取</title>
+    <script src="jquery/jquery-1.11.1.min.js"></script>
+    <script>
+
+        function doTest(){
+            //如果响应流已经设置为text/xml，则无需配置dataType为xml，
+            // jQuery会自动识别
+            $.ajax({
+                url:'second.do',
+                dataType:'xml',
+                success:function(ret){
+                    console.log(typeof ret);
+                    let names=ret.documentElement.getElementsByTagName("name");
+                    for(let i=0;i<names.length;i++){
+                        console.log(names[i].childNodes[0].nodeValue);
+                    }
+                },
+            });
+        }
+    </script>
+</head>
+<body>
+<input type="text" class="t1">
+<hr>
+<button onclick="doTest()">XML测试</button>
+</body>
+</html>

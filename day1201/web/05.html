@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery数据提交</title>
+    <script src="jquery/jquery-1.11.1.min.js"></script>
+    <script>
+        $(function(){
+           $(".btnSubmit").on("click",function(){
+               // $.post("fifth.do","name="+
+               //     $('.t1').val()+"&age="+
+               // $('.t2').val()+"&email="+
+               // $('.t3').val(),function(ret){
+               //     console.log(ret);
+               // });
+
+               // $.post("fifth.do",{
+               //     name: $('.t1').val(),
+               //     age:  $('.t2').val(),
+               //     email:$('.t3').val()
+               //     },
+               //     function(ret){
+               //     console.log(ret);
+               // });
+
+               $.post("fifth.do",$('form').serialize(),
+                   function(ret){
+                       console.log(ret);
+                   });
+           }) ;
+        });
+
+    </script>
+</head>
+<body>
+<form>
+    <p>
+        <label>name:</label>
+        <input type="text" class="t1" name="name">
+    </p>
+    <p>
+        <label>age:</label>
+        <input type="text" class="t2" name="age">
+    </p>
+    <p>
+        <label>email:</label>
+        <input type="text" class="t3" name="email">
+    </p>
+    <button type="button" class="btnSubmit">提交</button>
+</form>
+</body>
+</html>

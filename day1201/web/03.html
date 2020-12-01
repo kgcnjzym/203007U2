@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSON数据获取</title>
+    <script src="jquery/jquery-1.11.1.min.js"></script>
+    <script>
+        function doXHR(){
+            let xhr=new XMLHttpRequest();
+            xhr.open("get","third.do");
+            xhr.onreadystatechange=function(){
+                if(xhr.readyState==4 && xhr.status==200){
+                    let ret=xhr.responseText;
+                    console.log(typeof ret);
+                    console.log(ret);
+                    let obj=eval("("+ret+")");
+                    console.log(obj);
+                    console.log(obj.name,obj.age);
+                }
+            };
+            xhr.send(null);
+        }
+        function doAjax(){
+            $.ajax({
+                url:'third.do',
+                // dataType:'json',
+                success:function(ret){
+                    console.log(typeof ret);
+                    console.log(ret);
+
+                },
+            });
+        }
+        function doFast(){
+            $.ajax({
+                url:'user.do?op=one',
+                success:function(ret){
+                    console.log(ret);
+                },
+            });
+        }
+
+        function doFast2(){
+            $.ajax({
+                url:'user.do?op=list',
+                success:function(ret){
+                    console.log(ret);
+                },
+            });
+        }
+        function doFast3(){
+            $.ajax({
+                url:'user.do?op=set',
+                success:function(ret){
+                    console.log(ret);
+                },
+            });
+        }
+        function doFast4(){
+            $.ajax({
+                url:'user.do?op=map',
+                success:function(ret){
+                    console.log(ret);
+                },
+            });
+        }
+        function doFast5(){
+            $.ajax({
+                url:'user.do?op=array',
+                success:function(ret){
+                    console.log(ret);
+                },
+            });
+        }
+    </script>
+</head>
+<body>
+<input type="text" class="t1">
+<hr>
+<button onclick="doXHR()">原生方式</button>
+<button onclick="doAjax()">jQuery方式</button>
+<button onclick="doFast()">fastjson测试</button>
+<button onclick="doFast2()">fastjson测试List</button>
+<button onclick="doFast3()">fastjson测试Set</button>
+<button onclick="doFast4()">fastjson测试Map</button>
+<button onclick="doFast5()">fastjson测试Array</button>
+</body>
+</html>

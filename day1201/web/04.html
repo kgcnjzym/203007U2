@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery的其它ajax方法</title>
+    <script src="jquery/jquery-1.11.1.min.js"></script>
+    <script>
+        function doGet(){
+            $.get("first.do",function(ret){
+                console.log(ret);
+            });
+        }
+        function doGetJSON(){
+            $.getJSON("user.do?op=list",function(ret){
+               console.log(ret) ;
+            });
+        }
+        function doPost(){
+            $.post("first.do","name=mike",function(ret){
+                console.log(ret);
+            });
+        }
+        function doLoad(){
+            // $(".d1").load("fourth.do");
+            // $(".d1").load("menu.html",function(){
+            //     $(".lt4").text("new list item");
+            // });
+            $.get("menu.html",function(ret){
+                $(".d1").html(ret);
+                $(".lt4").text("new list item");
+            },"html");
+        }
+
+    </script>
+</head>
+<body>
+<input type="text" class="t1">
+<hr>
+<button onclick="doGet()">get</button>
+<button onclick="doGetJSON()">getJSON</button>
+<button onclick="doPost()">post</button>
+<button onclick="doLoad()">load</button>
+<hr>
+<div class="d1"></div>
+</body>
+</html>
