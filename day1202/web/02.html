@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自动提示</title>
+    <script src="jquery/jquery-1.11.1.min.js"></script>
+    <script src="jquery-ui/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="jquery-ui/jquery-ui.min.css">
+    <script>
+        $(function(){
+            $("#txtKey").autocomplete({
+                source:['andy','jerry','mike','tom','tony'],
+                minLength:2,
+                autoFocus:true,
+            });
+            let hosts=['sina.com','sina.cn','sohu.com','126.com','126.net','163.com','168.net'];
+            $("#txtEmail").autocomplete({
+                source:function(req,resp){
+                    let k=req.term;
+                    let atIndex=k.indexOf("@");
+                    if(atIndex<1){
+                        return;
+                    }
+                    let prefix=k.substring(0,atIndex);
+                    let emails=hosts.map(h=>prefix+'@'+h).filter(e=>e.startsWith(k));
+                    resp(emails);
+                },
+            });
+
+            $("#txtCity").autocomplete({
+                source:function(req,resp){
+                    let k=req.term;
+                    $.getJSON("city.do","op=auto&key="+k,function(ret){
+                        if(ret.errorCode){
+                            alert(ret.message);
+                            return;
+                        }
+                        let arr=ret.data.map(c=>c.name);
+                        resp(arr);
+                    })
+                },
+            });
+        });
+    </script>
+</head>
+<body>
+<input type="text" id="txtKey">
+<hr>
+<input type="text" id="txtEmail">
+<hr>
+<input type="text" id="txtCity">
+</body>
+</html>

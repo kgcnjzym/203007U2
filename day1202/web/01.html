@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>三级行政区划级联</title>
+    <script src="jquery/jquery-1.11.1.min.js"></script>
+    <script>
+        $(function(){
+            function fillData(up,sel) {
+                $.getJSON("city.do", "op=cas&up="+up, function (ret) {
+                    if (ret.errorCode) {
+                        alert(ret.message);
+                        return;
+                    }
+                    for (let i = 0; i < ret.data.length; i++) {
+                        let opt = new Option(ret.data[i].name,
+                            ret.data[i].id);
+                        $(sel).append(opt);
+                    }
+                });
+            }
+            fillData(0,'#selP');
+            $('#selP').on("change",function(){
+                $('#selC')[0].length=1;
+                $('#selD')[0].length=1;
+                let up=this.value;
+                 if(up==-1){
+                     return;
+                 }
+                 fillData(up,'#selC');
+            });
+            $('#selC').on("change",function(){
+                $('#selD')[0].length=1;
+                let up=this.value;
+                if(up==-1){
+                    return;
+                }
+                fillData(up,'#selD');
+            });
+        });
+    </script>
+</head>
+<body>
+<select id="selP">
+    <option value="-1">==请选择==</option>
+</select>
+<select id="selC">
+    <option value="-1">==请选择==</option>
+</select>
+<select id="selD">
+    <option value="-1">==请选择==</option>
+</select>
+</body>
+</html>
