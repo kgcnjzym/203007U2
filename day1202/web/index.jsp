@@ -8,9 +8,9 @@
   <ul>
     <li><a href="01.html">三级行政区划级联</a></li>
     <li><a href="02.html">自动提示</a></li>
-    <li><a href="03.html"></a></li>
-    <li><a href="04.html"></a></li>
-    <li><a href="05.html"></a></li>
+    <li><a href="03.html">AJAX上传</a></li>
+    <li><a href="04.html">三级行政区划级联JSONP</a></li>
+    <li><a href="05.html">三级行政区划级联CORS</a></li>
   </ul>
   </body>
 </html>

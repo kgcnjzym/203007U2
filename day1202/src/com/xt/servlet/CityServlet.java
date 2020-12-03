@@ -31,6 +31,7 @@ public class CityServlet extends HttpServlet {
         String str="";
         String op=req.getParameter("op");
         JsonData<List<City>> data=new JsonData<>();
+        String cb=req.getParameter("callback");
 
         if("cas".equals(op)){
             int up=0;
@@ -51,6 +52,9 @@ public class CityServlet extends HttpServlet {
                 data.setMessage(ex.getMessage());
             }
             str= JSON.toJSONString(data);
+            if(cb!=null && !cb.trim().equals("")){
+                str=cb+"("+str+")";
+            }
         }
         else if("auto".equals(op)){
             String ename=req.getParameter("key");

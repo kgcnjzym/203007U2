@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX上传</title>
+    <script src="jquery/jquery-1.11.1.min.js"></script>
+    <script>
+        $(function(){
+            $(".btn-up").on("click",function(){
+               $.ajax({
+                   url:'upload.do',
+                   data:new FormData($('.up')[0]),
+                   type:"post",
+                   contentType:false,
+                   processData:false,
+                   success:function(ret){
+                        if(ret.errorCode){
+                            alert(ret.message);
+                        }
+                        else{
+                            $("<img>").attr("src",ret.data).appendTo(".dimg");
+                        }
+                   }
+               });
+            });
+
+        });
+    </script>
+</head>
+<body>
+<form class="up" >
+    <p>
+        <label>Desc:</label>
+        <input type="text" name="desc">
+    </p>
+    <p>
+        <label>File:</label>
+        <input type="file" name="logo">
+    </p>
+    <button type="button" class="btn-up">上传</button>
+</form>
+<hr>
+<div class="dimg"></div>
+</body>
+</html>
