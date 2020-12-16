@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xt.dao.UserDao">
+    <select id="getCount" resultType="int" >
+        select count(1) from users
+    </select>
+
+    <select id="selectById" parameterType="int" resultType="com.xt.entity.User">
+        select id, name, password, email,  phone, score point
+        from users where id=#{id}
+    </select>
+
+    <insert id="insert" parameterType="com.xt.entity.User"
+        useGeneratedKeys="true" keyProperty="id" >
+        insert into users(name, password, email, phone, score, state)
+        values(#{name},#{password},#{email},#{phone},#{point},1)
+    </insert>
+</mapper>
