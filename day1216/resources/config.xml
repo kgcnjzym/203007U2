@@ -3,9 +3,35 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd" >
 <configuration>
 <!--    可选配置1：加载properties配置文件-->
-    <properties resource="db.properties"/>
+    <properties resource="db.properties">
+        <property name="password" value="aaaaaa"/>
+    </properties>
+
+<!--   可选配置2：全局设置 -->
+    <settings>
+<!--        是否允许使用列的别名：默认为true-->
+        <setting name="useColumnLabel" value="false"/>
+<!--        是否允许获取自增值-->
+        <setting name="useGeneratedKeys" value="true"/>
+<!--        配置日志类型：如果只有一个日志工具，则无需配置-->
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
+<!--   可选配置3：别名设置 -->
+    <typeAliases>
+<!--        方式1：逐一配置-->
+        <typeAlias type="com.xt.datasource.MyDruidDataSourceFactory" alias="druid"/>
+        <typeAlias type="com.xt.handler.MyNameHandler" alias="myNameHandler"/>
+<!--        <typeAlias type="com.xt.entity.User" alias="user"/>-->
+<!--        方式2：整体配置-->
+        <package name="com.xt.entity"/>
+    </typeAliases>
+<!--   可选配置4：类型转换设置 -->
+<!--    <typeHandlers>-->
+<!--        <typeHandler handler="" javaType="String" jdbcType="VARCHAR"/>-->
+<!--    </typeHandlers>-->
+
 <!--    必须配置1：运行环境-->
-    <environments default="jdbc">
+    <environments default="druid">
         <environment id="jdbc">
 <!--     JDBC 或 MANAGED       -->
             <transactionManager type="JDBC"/>
@@ -22,6 +48,15 @@
                 <property name="poolMaximumIdleConnections" value="5"/>
             </dataSource>
         </environment>
+
+        <environment id="druid">
+            <transactionManager type="JDBC"/>
+            <dataSource type="druid">
+                <property name="url"    value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
     </environments>
 
 <!--    必须配置2：映射文件-->
@@ -29,7 +64,9 @@
 <!--        1.使用xml作为映射配置-->
 <!--        <mapper resource="com/xt/dao/UserDao.xml"/>-->
 <!--        2.使用dao接口作为映射配置-->
-        <mapper class="com.xt.dao.UserDao"/>
+<!--        <mapper class="com.xt.dao.UserDao"/>-->
+<!--       3.整体配置 -->
+        <package name="com.xt.dao"/>
     </mappers>
 
 </configuration>

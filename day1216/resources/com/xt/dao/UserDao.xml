@@ -3,16 +3,69 @@
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xt.dao.UserDao">
+    <resultMap id="userMapper" type="user">
+<!--        <id column="id" property="id"/>-->
+        <result column="score" property="point" />
+        <result column="name" property="name" typeHandler="myNameHandler" />
+    </resultMap>
+    <sql id="selectBase">
+        select id, name, password, email,  phone, score
+        from users
+    </sql>
     <select id="getCount" resultType="int" >
         select count(1) from users
     </select>
 
-    <select id="selectById" parameterType="int" resultType="com.xt.entity.User">
-        select id, name, password, email,  phone, score point
-        from users where id=#{id}
+    <select id="selectById" parameterType="int"
+            resultMap="userMapper">
+        <include refid="selectBase"/> where id=#{id}
     </select>
 
-    <insert id="insert" parameterType="com.xt.entity.User"
+    <select id="selectUsers" parameterType="int"
+            resultMap="userMapper">
+        <include refid="selectBase"/> limit #{cnt}
+    </select>
+
+    <select id="selectByAge" parameterType="int"
+            resultMap="userMapper">
+        <include refid="selectBase"/>
+        where age &lt; #{maxAge}
+    </select>
+
+    <select id="selectByAges" resultMap="userMapper">
+        <include refid="selectBase"/>
+        <!--where age between #{arg0} and #{arg1}-->
+        <!--where age between #{param1} and #{param2}-->
+        where age between #{minAge} and #{maxAge}
+    </select>
+
+    <select id="selectByName1" resultMap="userMapper">
+        <include refid="selectBase"/>
+        where name like #{name}
+    </select>
+    <select id="selectByName3" resultMap="userMapper">
+        <include refid="selectBase"/>
+        where name rlike #{name}
+    </select>
+    <select id="selectByName4" resultMap="userMapper">
+        <include refid="selectBase"/>
+        where name like concat('%',#{name},'%')
+    </select>
+<!--    首选-->
+    <select id="selectByName5" resultMap="userMapper">
+        <!-- EL:${}   OGNL:#{}  -->
+        <bind name="key" value="'%'+_parameter+'%'"/>
+        <include refid="selectBase"/>
+        where name like #{key}
+    </select>
+<!--  极不推荐使用-->
+    <select id="selectByName2" parameterType="user"
+            resultMap="userMapper">
+        <include refid="selectBase"/>
+        where name like '%${name}%'
+    </select>
+
+    <insert id="insert" parameterType="user"
         useGeneratedKeys="true" keyProperty="id" >
         insert into users(name, password, email, phone, score, state)
         values(#{name},#{password},#{email},#{phone},#{point},1)
