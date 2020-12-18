@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xt.dao.BookDao">
+    <resultMap id="baseMapper" type="book">
+        <id column="bid" property="id"/>
+        <result column="bname" property="title"/>
+    </resultMap>
+    <select id="selectById" parameterType="int"
+            resultMap="baseMapper">
+        select * from book where bid=#{id}
+    </select>
+
+    <resultMap id="voMapper" type="bookVo" extends="baseMapper">
+        <collection property="users" column="bid" ofType="userVo"
+        select="com.xt.dao.UserDao.selectById"/>
+    </resultMap>
+    <select id="selectSellInfo" resultMap="voMapper">
+        select * from book
+    </select>
+</mapper>

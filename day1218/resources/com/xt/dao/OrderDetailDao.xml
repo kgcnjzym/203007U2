@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xt.dao.OrderDetailDao">
+    <resultMap id="baseMapper" type="orderDetail">
+        <id column="odid" property="odid"/>
+        <result column="oid" property="oid"/>
+        <result column="bid" property="bid"/>
+        <result column="quantity" property="quantity"/>
+        <result column="price" property="price"/>
+    </resultMap>
+    <resultMap id="voMapper" type="orderDetailVo" extends="baseMapper">
+        <association property="book" column="bid" javaType="book"
+                     select="com.xt.dao.BookDao.selectById"/>
+    </resultMap>
+    <select id="selectDetailVosByOrder" parameterType="int"
+        resultMap="voMapper">
+        select * from orderdetail where oid=#{oid}
+    </select>
+
+    <select id="selectSummary"  resultType="int">
+        select sum(quantity)
+        from orderdetail od inner join orders o
+            on od.oid = o.oid
+        where od.bid=#{bid} and uid=#{uid}
+    </select>
+</mapper>

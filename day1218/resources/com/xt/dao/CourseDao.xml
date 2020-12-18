@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xt.dao.CourseDao">
+    <resultMap id="baseMapper" type="course">
+        <id column="corid" property="id"/>
+    </resultMap>
+    <select id="selectById" parameterType="int"
+            resultMap="baseMapper">
+        select * from course
+        where corid=#{id}
+    </select>
+    <select id="selectCoursesByTeacher" parameterType="int"
+            resultMap="baseMapper">
+        select * from course
+        where tecid=#{tid}
+    </select>
+
+<!--    单表多次查询-->
+    <!--    <resultMap id="voMapper" type="courseVo">-->
+    <!--        <id column="corid" property="id"/>-->
+    <!--        <result column="tecid" property="tecId"/>-->
+    <!--        <association property="teacher" column="tecid"-->
+    <!--                     javaType="teacher" select="com.xt.dao.TeacherDao.selectById"/>-->
+    <!--    </resultMap>-->
+<!--    <select id="selectVoById" parameterType="int"-->
+<!--            resultMap="voMapper">-->
+<!--        select * from course-->
+<!--        where corid=#{id}-->
+<!--    </select>-->
+
+
+    <!--        多表连接查询-->
+<!--        <resultMap id="voMapper" type="courseVo">-->
+<!--            <id column="corid" property="id"/>-->
+<!--            <result column="tname" property="teacher.name"/>-->
+<!--            <result column="tecid" property="teacher.id"/>-->
+<!--            <result column="tecid" property="tecId"/>-->
+<!--        </resultMap>-->
+    <resultMap id="voMapper" type="courseVo">
+        <id column="corid" property="id"/>
+        <result column="tecid" property="tecId"/>
+        <result column="name" property="name"/>
+        <association property="teacher" javaType="teacher">
+            <result column="tecid" property="id"/>
+            <result column="tname" property="name"/>
+        </association>
+    </resultMap>
+        <select id="selectVoById" parameterType="int"
+                resultMap="voMapper">
+            select c.*,t.name tname from course c
+            inner join teacher t
+                on c.tecid = t.tecid
+            where c.corid=#{id}
+        </select>
+</mapper>

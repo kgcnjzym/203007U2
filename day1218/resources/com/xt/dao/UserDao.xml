@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xt.dao.UserDao">
+    <resultMap id="baseMapper" type="user">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
+    <resultMap id="voMapper" type="userVo" extends="baseMapper">
+        <association property="summary" javaType="int"
+             column="{bid=bid,uid=id}"
+             select="com.xt.dao.OrderDetailDao.selectSummary"  />
+    </resultMap>
+    <select id="selectById" resultMap="voMapper"
+            parameterType="int">
+        select u.*,bid from users u inner join (
+            select uid,bid from orders inner join orderdetail o
+            on orders.oid = o.oid
+            where bid=#{id}
+            group by uid
+        ) o on u.id=o.uid;
+    </select>
+</mapper>
