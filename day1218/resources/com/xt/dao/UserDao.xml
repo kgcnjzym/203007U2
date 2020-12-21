@@ -6,6 +6,7 @@
     <resultMap id="baseMapper" type="user">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
+        <result column="email" property="email"/>
     </resultMap>
     <resultMap id="voMapper" type="userVo" extends="baseMapper">
         <association property="summary" javaType="int"
@@ -21,4 +22,135 @@
             group by uid
         ) o on u.id=o.uid;
     </select>
-</mapper>
+
+    <select id="selectByUser" resultMap="baseMapper" parameterType="user">
+        select * from users where 1=1
+        <if test="name neq null">
+            and name like concat('%',#{name},'%')
+        </if>
+        <if test="email neq null">
+            and email like concat('%',#{email},'%')
+        </if>
+    </select>
+    <select id="selectByUser2" resultMap="baseMapper" parameterType="user">
+        select * from users
+        <choose>
+            <when test="name neq null and email eq null">
+                where name like concat('%',#{name},'%')
+            </when>
+            <when test="name eq null and email neq null">
+                where email like concat('%',#{email},'%')
+            </when>
+            <when test="name neq null and email neq null">
+                where name like concat('%',#{name},'%') and
+                email like concat('%',#{email},'%')
+            </when>
+        </choose>
+    </select>
+    <select id="selectByUser3" resultMap="baseMapper" parameterType="user">
+        select * from users
+        <where>
+            <if test="name neq null">
+                name like concat('%',#{name},'%')
+            </if>
+            <if test="email neq null">
+                and email like concat('%',#{email},'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectByUser4" resultMap="baseMapper" parameterType="user">
+        SELECT * from users
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="name neq null">
+                name like concat('%',#{name},'%')
+            </if>
+            <if test="email neq null">
+                and email like concat('%',#{email},'%')
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectByAges" parameterType="map" resultMap="baseMapper">
+        select * from users where 1=1
+        <if test="minAge neq null and maxAge neq null and minAge lt maxAge">
+            and age between #{minAge} and #{maxAge}
+        </if>
+        <if test="minAge neq null and maxAge neq null and minAge gte maxAge">
+            and age between #{maxAge} and #{minAge}
+        </if>
+        <if test="minAge neq null and maxAge eq null">
+            and age &gt; #{minAge}
+        </if>
+        <if test="minAge eq null and maxAge neq null">
+            and age &lt; #{maxAge}
+        </if>
+    </select>
+    <select id="selectByAges2" resultMap="baseMapper">
+        select * from users
+        <choose>
+            <when test="minAge neq null and maxAge neq null and minAge lt maxAge">
+                where age between #{minAge} and #{maxAge}
+            </when>
+            <when test="minAge neq null and maxAge neq null and minAge gte maxAge">
+                where age between #{maxAge} and #{minAge}
+            </when>
+            <when test="minAge neq null and maxAge eq null">
+                where age &gt; #{minAge}
+            </when>
+            <when test="minAge eq null and maxAge neq null">
+                where age &lt; #{maxAge}
+            </when>
+        </choose>
+    </select>
+
+    <update id="update" parameterType="user">
+        update users
+        <set>
+            id=#{id},
+            <if test="name neq null">
+                name=#{name},
+            </if>
+            <if test="email neq null">
+                email=#{email},
+            </if>
+            <if test="age neq null">
+                age=#{age}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="update2" parameterType="user">
+        UPDATE users
+        <trim prefix="set" suffixOverrides=",">
+            id=#{id},
+            <if test="name neq null">
+                name=#{name},
+            </if>
+            <if test="email neq null">
+                email=#{email},
+            </if>
+            <if test="age neq null">
+                age=#{age}
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <update id="updateStates" >
+        update users set state=#{newState}
+        where id in
+        <foreach collection="ids" item="i"
+                 open="(" close=")" separator=",">
+            #{i}
+        </foreach>
+        and state=#{oldState}
+    </update>
+
+    <insert id="insertUsers" >
+        insert into users(name,email,age) values
+        <foreach collection="list" item="u" separator=",">
+            (#{u.name},#{u.email},#{u.age})
+        </foreach>
+    </insert>
+ </mapper>
