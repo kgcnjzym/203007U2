@@ -6,14 +6,21 @@
     <settings>
         <setting name="useGeneratedKeys" value="true"/>
         <setting name="logImpl" value="LOG4J"/>
-<!--        配置懒加载-->
-        <setting name="lazyLoadingEnabled" value="true"/>
-<!--       <=3.4.1时必须配置下列选项 -->
-<!--        <setting name="aggressiveLazyLoading" value="false"/>-->
     </settings>
     <typeAliases>
         <package name="com.xt.entity"/>
     </typeAliases>
+
+<!--    插件配置-->
+    <plugins>
+<!--        分页插件-->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+<!--         配置数据库方言   -->
+            <property name="helperDialect" value="mysql"/>
+<!--         配置分页参数合理化   -->
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
 
     <environments default="jdbc">
         <environment id="jdbc">

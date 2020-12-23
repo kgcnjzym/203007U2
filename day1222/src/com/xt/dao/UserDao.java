@@ -76,7 +76,7 @@ public interface UserDao {
      *
      * @return 对象列表
      */
-    @Select("select * from users ")
+    @Select("select id,name from users ")
     List<User> queryAll();
 
     /**
@@ -97,6 +97,7 @@ public interface UserDao {
      * @param user 实例对象
      * @return 影响行数
      */
+    @Update("update users set name=#{name} where id=#{id}")
     int update(User user);
 
     /**

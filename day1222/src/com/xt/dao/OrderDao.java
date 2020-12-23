@@ -27,6 +27,14 @@ public interface OrderDao {
     })
     OrderVo selectById(Integer id);
 
+    @Select("select * from orders ")
+    @Results({
+            @Result(column = "uid",property = "uid"),
+            @Result(column = "uid",property = "user",
+                    one = @One(select = "com.xt.dao.UserDao.queryById"))
+    })
+    List<OrderVo> selectAll();
+
     @Select("select * from orders where uid=#{id}")
     List<Order> selectByUser(Integer id);
 }
