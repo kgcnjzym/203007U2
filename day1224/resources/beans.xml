@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans>
+    <bean id="userdao" class="com.xt.dao.impl2.UserDaoImpl" />
+    <bean id="userservice" class="com.xt.service.impl.UserServiceImpl">
+        <property name="dao" ref="userdao"/>
+    </bean>
+</beans>
