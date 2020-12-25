@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans default-lazy-init="true" xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+
+    <bean id="userservice" class="com.xt.service.impl.UserServiceImpl"/>
+<!--1.创建增强/通知对象-->
+    <bean id="logAdvice" class="com.xt.advice.LoggerAdvice"/>
+    <bean id="tm" class="com.xt.util.jdbc.TransactionManager"/>
+<!--    <bean id="txAdvice" class="com.xt.advice.TransactionAdvice">-->
+<!--        <property name="tm" ref="tm"/>-->
+<!--    </bean>-->
+<!--2.添加aop命名空间-->
+<!--3.配置aop:config-->
+    <aop:config>
+<!--4.切面Aspect：what/where/when-->
+<!--    4-1.增强/通知Advice:what 做什么-->
+        <aop:aspect ref="tm">
+<!--    4-2.切入点Pointcut:where 在哪里切入（使用SpEL）-->
+            <aop:pointcut id="pt"
+                 expression="execution(public * com.xt.service.UserService.*(..))" />
+<!--    4-3:连接点JoinPoint：when 何时-->
+<!--            5-1.前置增强-->
+<!--            <aop:before method="before" pointcut-ref="pt"/>-->
+<!--            5-2.后置增强：一般较少用到-->
+<!--            <aop:after method="after" pointcut-ref="pt"/>-->
+<!--            5-3.正常结束的后置增强-->
+<!--            <aop:after-returning method="afterReturning"-->
+<!--                 pointcut-ref="pt" returning="ret"/>-->
+<!--            5-4.异常结束的后置增强-->
+<!--            <aop:after-throwing method="afterThrowing"-->
+<!--                 pointcut-ref="pt" throwing="ex"/>-->
+<!--            5-5.环绕增强-->
+<!--            <aop:around method="around" pointcut-ref="pt"/>-->
+            <aop:before method="start" pointcut-ref="pt"/>
+            <aop:after-returning method="commit" pointcut-ref="pt"/>
+            <aop:after-throwing method="rollback" pointcut-ref="pt"/>
+        </aop:aspect>
+    </aop:config>
+</beans>

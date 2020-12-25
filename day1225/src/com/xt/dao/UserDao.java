@@ -38,4 +38,11 @@ public interface UserDao {
      */
     @Insert("insert into users(name,email,phone) values(?,?,?)")
     int insert(String name,String email,String phone);
+
+
+    @Insert("update users set score=score+1 where id=?")
+    int update(Integer id);
+
+    @Select("select * from users where name=?")
+    User selectByName(String name);
 }
