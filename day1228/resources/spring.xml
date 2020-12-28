@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans default-lazy-init="true" xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+<!--    设置注入-->
+    <bean id="u1" class="com.xt.entity.User">
+        <property name="id" value="1"/>
+        <property name="name" value="aa"/>
+        <property name="email" value="aa@qq.com"/>
+    </bean>
+<!--构造注入-->
+    <bean id="u2" class="com.xt.entity.User">
+        <constructor-arg name="id" value="2"/>
+        <constructor-arg name="name" value="lisi"/>
+        <constructor-arg name="email" value="lisi@qq.com"/>
+    </bean>
+<!--p命名空间-->
+    <bean id="u3" class="com.xt.entity.User" p:id="3"
+    p:name="mike" p:email="mike@qq.com"/>
+<!--    使用实例工厂模式创建日期对象-->
+    <bean id="fmt" class="java.text.SimpleDateFormat">
+        <constructor-arg value="yyyy-MM-dd"/>
+    </bean>
+    <bean id="date" factory-bean="fmt" factory-method="parse">
+        <constructor-arg value="2020-12-28"/>
+    </bean>
+<!--简单类型及其集合的注入-->
+    <bean id="order" class="com.xt.entity.Order" p:user-ref="u1">
+        <property name="id" value="1"/>
+        <property name="books">
+            <list>
+                <value>1</value>
+                <value>4</value>
+                <value>10</value>
+                <value>13</value>
+                <value>10</value>
+            </list>
+        </property>
+        <property name="clz" value="java.util.Random"/>
+        <property name="carts">
+            <map>
+                <entry key="A1213" value="3"/>
+                <entry key="A4562" value="2"/>
+                <entry key="A6677" value="6"/>
+            </map>
+        </property>
+        <property name="props">
+            <props >
+                <prop key="aa">dsfsad</prop>
+                <prop key="bb">asdasd</prop>
+                <prop key="cc">23423</prop>
+                <prop key="dd">sertwer</prop>
+            </props>
+        </property>
+        <property name="date" ref="date"/>
+    </bean>
+<!--工厂模式1：静态工厂-->
+    <bean id="u4" factory-method="createUser" class="com.xt.factory.StaticUserFactory">
+        <constructor-arg value="4"/>
+        <constructor-arg value="andy"/>
+        <constructor-arg value="andy@qq.com"/>
+    </bean>
+<!--工厂模式2：实例工厂-->
+    <bean id="factory" class="com.xt.factory.InstanceUserFactory" />
+    <bean id="u5" factory-bean="factory" factory-method="newInstance">
+        <constructor-arg value="5"/>
+        <constructor-arg value="tom"/>
+        <constructor-arg value="tom@qq.com"/>
+    </bean>
+</beans>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans default-lazy-init="true" xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+
+    <bean id="order" class="com.xt.entity.Order">
+        <property name="date" value="2020/12/30"/>
+    </bean>
+
+<!--  实现方式1：PropertyEditorSupport  -->
+<!--    2.配置支持器-->
+<!--    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">-->
+<!--        <property name="customEditors">-->
+<!--            <map>-->
+<!--                <entry key="java.util.Date"-->
+<!--                       value="com.xt.support.MyDateSupport"/>-->
+<!--            </map>-->
+<!--        </property>-->
+<!--    </bean>-->
+<!--  实现方式2：PropertyEditorRegistrar  -->
+    <!--    2.配置注册器-->
+    <bean id="myreg" class="com.xt.regist.MyRegistrar">
+        <constructor-arg value="yyyy/MM/dd"/>
+    </bean>
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="propertyEditorRegistrars">
+            <array>
+                <ref bean="myreg"/>
+            </array>
+        </property>
+    </bean>
+
+<!--    抽象bean-->
+    <bean id="abs" abstract="true">
+        <property name="name" value="mike"/>
+    </bean>
+    <bean id="u1" class="com.xt.entity.User" parent="abs"/>
+</beans>

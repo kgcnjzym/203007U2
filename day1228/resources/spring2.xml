@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans default-autowire="no" default-lazy-init="true"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+    <bean id="u1" class="com.xt.entity.User">
+        <property name="id" value="1"/>
+        <property name="name" value="tom"/>
+        <property name="email" value="tom@qq.com"/>
+    </bean>
+    <bean id="u2" class="com.xt.entity.User" primary="true">
+        <property name="id" value="2"/>
+        <property name="name" value="andy"/>
+        <property name="email" value="andy@qq.com"/>
+    </bean>
+
+    <bean id="order" class="com.xt.entity.Order" autowire="byType"/>
+
+</beans>
