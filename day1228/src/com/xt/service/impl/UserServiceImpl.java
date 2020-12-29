@@ -3,8 +3,9 @@ package com.xt.service.impl;
 import com.xt.dao.UserDao;
 import com.xt.entity.User;
 import com.xt.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @author 杨卫兵
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
+    //@Autowired
+    //@Qualifier
+    @Resource
     private UserDao dao;
     @Override
     public int reg(User user) {

@@ -6,6 +6,18 @@
        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-4.2.xsd">
-    <context:component-scan base-package="com.xt"/>
-
+    <context:component-scan base-package="com.xt" 
+             use-default-filters="false">
+<!--        <context:exclude-filter type="assignable"
+        expression="com.xt.dao.impl2.UserDaoImpl"/>-->
+<!--        <context:exclude-filter type="aspectj" expression="com.xt.dao.impl2..*"/>-->
+<!--        <context:include-filter type="assignable"-->
+<!--                 expression="com.xt.dao.impl2.UserDaoImpl"/>-->
+<!--        <context:include-filter type="assignable"-->
+<!--                 expression="com.xt.service.UserService"/>-->
+        <context:include-filter type="aspectj"
+                 expression="com.xt.service..*"/>
+        <context:include-filter type="aspectj"
+                 expression="com.xt.dao.impl2.UserDaoNewImpl"/>
+    </context:component-scan>
 </beans>
