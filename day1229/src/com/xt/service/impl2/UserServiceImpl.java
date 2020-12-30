@@ -3,8 +3,8 @@ package com.xt.service.impl2;
 import com.xt.dao.UserDao;
 import com.xt.entity.User;
 import com.xt.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -16,12 +16,14 @@ import javax.annotation.Resource;
  */
 @Service
 public class UserServiceImpl implements UserService {
+    private static Logger logger=Logger.getRootLogger();
 
     @Resource
     private UserDao dao;
     @Override
-    @Transactional
+//    @Transactional
     public int reg(User user) {
+        logger.info("dao:"+dao.getClass());
         int ret=0;
         dao.update(173);
         ret=dao.insert(user);

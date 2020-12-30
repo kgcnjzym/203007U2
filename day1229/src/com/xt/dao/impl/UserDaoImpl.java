@@ -2,6 +2,7 @@ package com.xt.dao.impl;
 
 import com.xt.dao.UserDao;
 import com.xt.entity.User;
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
@@ -20,6 +21,7 @@ import java.sql.*;
  */
 @Repository
 public class UserDaoImpl implements UserDao {
+    private static Logger logger=Logger.getRootLogger();
     @Resource
     /**
      * 4.注入JdbcTemplate对象
@@ -82,6 +84,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public int update(Integer id) {
         String sql="update users set score=score+1 where id=?";
-        return template.update(sql,id);
+        logger.info("SQL:"+sql);
+        int ret=template.update(sql,id);
+        logger.info("update ret="+ret);
+        return ret;
     }
 }
