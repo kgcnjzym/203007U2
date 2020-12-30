@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+<!--    1.记载数据库配置文件（可选）-->
+    <context:property-placeholder location="classpath:db.properties"/>
+<!--    2.创建数据源：视数据源类型不同而有差异-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+    </bean>
+<!--    抽象bean-->
+    <bean id="ds" abstract="true">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+<!--    A.窗口分页拦截器对象-->
+    <bean id="pageInterceptor" class="com.github.pagehelper.PageInterceptor">
+        <property name="properties">
+            <value>
+                helperDialect=mysql
+                reasonable=true
+            </value>
+<!--            <props>-->
+<!--                <prop key="helperDialect">mysql</prop>-->
+<!--                <prop key="reasonable">true</prop>-->
+<!--            </props>-->
+        </property>
+    </bean>
+
+<!--    1.创建SqlSessionFactoryBean-->
+    <bean id="factory" class="org.mybatis.spring.SqlSessionFactoryBean"
+        parent="ds">
+        <property name="typeAliasesPackage" value="com.xt.entity"/>
+<!--        B.配置插件-->
+        <property name="plugins" >
+            <list>
+                <ref bean="pageInterceptor"/>
+            </list>
+        </property>
+    </bean>
+<!--    2.为每个dao配置一个Mapper(不建议)-->
+<!--    <bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+<!--        <property name="mapperInterface" value="com.xt.dao.UserDao"/>-->
+<!--        <property name="sqlSessionFactory" ref="factory"/>-->
+<!--    </bean>-->
+<!--    <bean id="cityMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+<!--        <property name="mapperInterface" value="com.xt.dao.CityDao"/>-->
+<!--        <property name="sqlSessionFactory" ref="factory"/>-->
+<!--    </bean>-->
+<!--    2.使用扫描器实现统一配置-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.xt.dao"/>
+        <property name="sqlSessionFactoryBeanName"
+                  value="factory"/>
+    </bean>
+
+    <context:component-scan base-package="com.xt"/>
+
+
+</beans>

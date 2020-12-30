@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xt.dao.UserDao">
+    <resultMap id="baseMapper" type="user">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="gender" property="gender"/>
+        <result column="age" property="age"/>
+        <result column="phone" property="phone"/>
+        <result column="score" property="point"/>
+        <result column="state" property="state"/>
+    </resultMap>
+
+    <select id="selectById" parameterType="int"
+            resultMap="baseMapper">
+        select * from users where id=#{id}
+    </select>
+
+    <select id="selectUsers" resultMap="baseMapper">
+        select * from users
+    </select>
+
+    <insert id="insert" parameterType="user" keyProperty="id">
+        insert into users(name,email,phone)
+        values(#{name},#{email},#{phone})
+    </insert>
+
+    <update id="update" parameterType="user">
+        update users
+        <set>
+            score=score+1,
+
+            <if test="age neq null">
+                age=#{age},
+            </if>
+
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>
