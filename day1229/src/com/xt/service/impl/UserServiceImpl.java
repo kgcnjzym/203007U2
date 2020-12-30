@@ -25,6 +25,8 @@ public class UserServiceImpl implements UserService {
     public int reg(User user) {
         int ret=0;
         DefaultTransactionDefinition dtd=new DefaultTransactionDefinition();
+//        dtd.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+//        dtd.setIsolationLevel(TransactionDefinition.ISOLATION_READ_COMMITTED);
         TransactionStatus status=transactionManager.getTransaction(dtd);
 
         try{

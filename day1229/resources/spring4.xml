@@ -30,11 +30,9 @@ http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
     <bean id="template" parent="ds"
           class="org.springframework.jdbc.core.JdbcTemplate"/>
 
-<!--    5.声明式事务配置-->
-    <bean id="transactionManager"
-          parent="ds"
+<!--    5.声明式事务-->
+    <bean id="transactionManager" parent="ds"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager"/>
-
 
     <!--    6.声明式事务配置-->
     <tx:advice id="tm" >
