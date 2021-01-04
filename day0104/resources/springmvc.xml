@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans default-lazy-init="true"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-4.2.xsd
+http://www.springframework.org/schema/mvc
+http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+
+    <context:component-scan base-package="com.xt"/>
+<!--    直接加载properties文件，使用${}获取-->
+    <context:property-placeholder location="classpath:log4j.properties"/>
+
+<!--    创建PropertiesFactoryBean,使用#{}获取-->
+    <bean id="propa" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="location" value="classpath:a.properties"/>
+    </bean>
+    <bean id="propb" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="location" value="classpath:b.properties"/>
+    </bean>
+    <mvc:annotation-driven />
+<!--    配置静态资源处理器-->
+    <mvc:default-servlet-handler />
+<!--    配置无功能的页面请求-->
+    <mvc:view-controller path="/" view-name="index"/>
+    <mvc:view-controller path="/user/info" view-name="info"/>
+    <mvc:view-controller path="/index" view-name="index"/>
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass"
+             value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+</beans>
