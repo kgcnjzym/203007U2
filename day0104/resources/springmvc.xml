@@ -22,19 +22,38 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
     <bean id="propb" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="location" value="classpath:b.properties"/>
     </bean>
-    <mvc:annotation-driven />
+<!--    配置类型转换器对象-->
+    <bean id="cfb"
+          class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+<!--                <ref bean="myDateConverter"/>-->
+                <ref bean="seatConverter"/>
+            </list>
+        </property>
+    </bean>
+    <mvc:annotation-driven conversion-service="cfb">
+
+    </mvc:annotation-driven>
 <!--    配置静态资源处理器-->
     <mvc:default-servlet-handler />
 <!--    配置无功能的页面请求-->
     <mvc:view-controller path="/" view-name="index"/>
     <mvc:view-controller path="/user/info" view-name="info"/>
     <mvc:view-controller path="/index" view-name="index"/>
+    <mvc:view-controller path="/loginform" view-name="login"/>
+    <mvc:view-controller path="/regform" view-name="reg"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass"
              value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/pages/"/>
         <property name="suffix" value=".jsp"/>
+    </bean>
+<!--    配置国际化消息-->
+    <bean id="messageSource"
+          class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="message"/>
     </bean>
 
 </beans>
