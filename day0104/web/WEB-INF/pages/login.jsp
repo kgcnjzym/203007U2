@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 </head>
 <body>
-<form:form action="fourth/login"  commandName="user">
+<h2>${msg}</h2>
+<form:form action="user/login"  commandName="user">
     <p>
         <label>Name:</label>
         <input type="text" name="name">

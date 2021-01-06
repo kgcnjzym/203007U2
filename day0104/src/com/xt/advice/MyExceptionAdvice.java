@@ -1,6 +1,5 @@
 package com.xt.advice;
 
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * @date 2021/1/5 12:17
  * @since V1.00
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class MyExceptionAdvice {
     @ExceptionHandler
     public String doException(Exception ex){

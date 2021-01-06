@@ -32,8 +32,32 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
             </list>
         </property>
     </bean>
-    <mvc:annotation-driven conversion-service="cfb">
-
+<!--    配置.com、.rar等特殊结尾的处理-->
+    <bean id="negotiationManager"
+          class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="favorPathExtension" value="false"/>
+    </bean>
+    <mvc:annotation-driven conversion-service="cfb"
+         content-negotiation-manager="negotiationManager">
+        <mvc:path-matching suffix-pattern="false" />
+        <mvc:message-converters>
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+<!--                以下配置不建议写在配置文件里，而是在实体类上添加注解-->
+<!--                <property name="features">-->
+<!--                    <list>-->
+<!--                        <value>WriteDateUseDateFormat</value>-->
+<!--                    </list>-->
+<!--                </property>-->
+<!--                <property name="dateFormat">-->
+<!--                    <value>yyyy-MM-dd</value>-->
+<!--                </property>-->
+            </bean>
+        </mvc:message-converters>
     </mvc:annotation-driven>
 <!--    配置静态资源处理器-->
     <mvc:default-servlet-handler />
@@ -43,6 +67,23 @@ http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
     <mvc:view-controller path="/index" view-name="index"/>
     <mvc:view-controller path="/loginform" view-name="login"/>
     <mvc:view-controller path="/regform" view-name="reg"/>
+
+<!--    配置拦截器-->
+    <mvc:interceptors>
+<!--        <bean class="com.xt.interceptor.SecondInterceptor"/>-->
+<!--        <bean class="com.xt.interceptor.FirstInterceptor"/>-->
+<!--        <mvc:interceptor>-->
+<!--            <mvc:mapping path="/**"/>-->
+<!--            <mvc:exclude-mapping path="/sixth/**"/>-->
+<!--            <bean class="com.xt.interceptor.ThirdInterceptor"/>-->
+<!--        </mvc:interceptor>-->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/user/login"/>
+            <mvc:exclude-mapping path="/loginform"/>
+            <ref bean="authInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass"

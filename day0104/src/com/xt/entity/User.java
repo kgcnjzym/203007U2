@@ -1,5 +1,9 @@
 package com.xt.entity;
 
+//import com.fasterxml.jackson.annotation.JsonFormat;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson.annotation.JSONType;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.xt.valid.UserLoginGroup;
 import com.xt.valid.UserRegGroup;
 import lombok.Data;
@@ -17,6 +21,8 @@ import java.util.Date;
  * @since V1.00
  */
 @Data
+@JSONType(serialzeFeatures = {SerializerFeature.WriteDateUseDateFormat,
+SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.DisableCircularReferenceDetect})
 public class User {
     private Integer id;
     @NotNull(groups = {UserRegGroup.class, UserLoginGroup.class})
@@ -37,6 +43,8 @@ public class User {
     private Integer age;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JSONField(format ="yyyy-MM-dd HH:mm:ss")
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone ="GMT+8" )
     @Past(groups = {UserRegGroup.class})
     private Date birth;
 }

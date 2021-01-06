@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>welcome:【${user1.name}】</h1>
+    <h1>welcome:【${user.name}】</h1>
 
 </body>
 </html>

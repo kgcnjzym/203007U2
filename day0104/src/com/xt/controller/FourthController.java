@@ -48,6 +48,7 @@ public class FourthController {
 
     @RequestMapping("reg")
     public String reg(@Validated({UserRegGroup.class}) User user, Errors errors){
+        System.out.println(errors.getFieldError("name").getDefaultMessage());
         if(errors.hasErrors()){
             return "reg";
         }
