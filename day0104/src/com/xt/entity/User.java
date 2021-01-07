@@ -47,4 +47,6 @@ public class User {
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone ="GMT+8" )
     @Past(groups = {UserRegGroup.class})
     private Date birth;
+
+    private String headImage;
 }
